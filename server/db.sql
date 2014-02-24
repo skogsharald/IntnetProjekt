@@ -11,13 +11,14 @@ CREATE TABLE users(
 	username varchar(64),
 	password varchar(64),
 	country varchar(64),
+	email varchar(64),
 	PRIMARY KEY(id)
 );
 
 CREATE TABLE transfers(
 	id int NOT NULL AUTO_INCREMENT,
-	fromUser varchar(64),
-	toUser varchar(64),
+	fromUser int,
+	toUser int,
 	amount int,
 	PRIMARY KEY(id)
 );
