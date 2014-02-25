@@ -20,13 +20,24 @@ CREATE TABLE transfers(
 	fromUser int,
 	toUser int,
 	amount int,
+	dt date,
 	PRIMARY KEY(id)
 );
 
 CREATE TABLE rates(
 	fromCurr varchar(64),
 	toCurr varchar(64),
-	rate float,
-	PRIMARY KEY(fromCurr)
+	rate float
 );
+
+INSERT INTO rates VALUES ('SEK', 'USD', 0.154);
+INSERT INTO rates VALUES ('USD', 'SEK', 6.4935);
+INSERT INTO rates VALUES ('GBP', 'SEK', 10.8051);
+INSERT INTO rates VALUES ('GBP', 'USD', 1.664);
+INSERT INTO rates VALUES ('SEK', 'GBP', 0.09254);
+INSERT INTO rates VALUES ('USD', 'GBP', 0.60096);
+
+
+
+
 

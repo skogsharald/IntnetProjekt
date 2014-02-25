@@ -3,6 +3,8 @@ import BaseHTTPServer
 import threading
 import sys
 import time
+import json
+from dbcommunicator import DBcommunicator
 
 
 HOST_NAME = 'localhost'
@@ -21,11 +23,64 @@ BaseHTTPServer.BaseHTTPRequestHandler.address_string = \
 
 class RequestHandler(BaseHTTPRequestHandler):
 
+
 	def do_GET(self):
 		request = self.path.split('/')
 		userIP = self.address_string()
 
-		print request, userIP
+		request_type = request[1]
+		comm = DBcommunicator()
+		if request_type == 'add_user':
+			res = comm.add_user(request)
+			if 'ERROR' in res:
+				# If arguments are too few, send a response with error
+				self.send_response(400)
+			else:
+				self.send_response(200)
+			self.send_header('Content-Type', 'text/html')
+			self.end_headers()
+			self.wfile.write(res)
+
+		if request_type == 'get_users':
+			res = comm.get_users()
+			if 'ERROR' in res:
+				self.send_response(400)
+				self.send_header('Content-Type', 'text/html')
+				self.end_headers()
+				self.wfile.write(res)
+				return
+			self.send_response(200)
+			self.send_header('Content-Type', 'text/html')
+			self.end_headers()
+			self.wfile.write(json.dumps({"users":res}))
+
+		if request_type == 'login_user':
+			res = comm.login_user(request)
+			if 'ERROR' in res:
+				self.send_response(400)
+				self.send_header('Content-Type', 'text/html')
+				self.end_headers()
+				self.wfile.write(res)
+				return
+			self.send_response(200)
+			self.send_header('Content-Type', 'text/html')
+			self.end_headers()
+			self.wfile.write(json.dumps(res))
+
+		if request_type == 'get_transfers':
+			res = comm.get_transfers(request)
+			if 'ERROR' in res:
+				self.send_response(400)
+				self.send_header('Content-Type', 'text/html')
+				self.end_headers()
+				self.wfile.write(res)
+				return
+			self.send_response(200)
+			self.send_header('Content-Type', 'text/html')
+			self.end_headers()
+			self.wfile.write(json.dumps({"transfers":res}))
+
+
 
 def run_server(server):
 	server.serve_forever()
