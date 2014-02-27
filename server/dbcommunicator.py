@@ -65,15 +65,20 @@ class DBcommunicator:
 	def get_transfers(self, request):
 		data = request[2].split('&')
 		try:
-			username = data[0].split('=')[1]
+			userID = int(data[0].split('=')[1])
 		except IndexError:
 			return 'ERROR: Too few arguments'
+		except TypeError:
+			return 'ERROR: userID is not an integer value'
 		connection = MySQLdb.connect(host='localhost', user='intnetuser', db='intnet', passwd='hejintnet')
 		cursor = connection.cursor(MySQLdb.cursors.DictCursor)
-		cursor.execute('SELECT * FROM transfers where fromUser = %s', username)
+		cursor.execute('SELECT id, fromUser, toUser, amount, dt FROM transfers where fromUser = %s', userID)
 		transfers = cursor.fetchall()
 		cursor.close()
 		connection.close()
+		#Convert from datetime.datetime to date and time string
+		for index in range(len(transfers)):
+			transfers[index]['dt'] = transfers[index]['dt'].strftime("%Y-%m-%d %H:%M:%S")
 		return transfers
 
 	def get_user_currency(self, request):
@@ -99,7 +104,7 @@ class DBcommunicator:
 		except IndexError:
 			return 'ERROR: Too few arguments'
 		except ValueError:
-			return 'ERROR: amount is not a float value'
+			return 'ERROR: only float and integer values are allowed'
 		date = time.strftime('%Y-%m-%d %H:%M:%S')
 		connection = MySQLdb.connect(host='localhost', user='intnetuser', db='intnet', passwd='hejintnet')
 		cursor = connection.cursor(MySQLdb.cursors.DictCursor)
