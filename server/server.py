@@ -50,7 +50,7 @@ class RequestHandler(BaseHTTPRequestHandler):
 				self.wfile.write(res)
 				return
 			self.send_response(200)
-			self.send_header('Content-Type', 'text/html')
+			self.send_header('Content-Type', 'text/json')
 			self.end_headers()
 			self.wfile.write(json.dumps({"users":res}))
 
@@ -63,7 +63,7 @@ class RequestHandler(BaseHTTPRequestHandler):
 				self.wfile.write(res)
 				return
 			self.send_response(200)
-			self.send_header('Content-Type', 'text/html')
+			self.send_header('Content-Type', 'text/json')
 			self.end_headers()
 			self.wfile.write(json.dumps(res))
 
@@ -76,9 +76,32 @@ class RequestHandler(BaseHTTPRequestHandler):
 				self.wfile.write(res)
 				return
 			self.send_response(200)
-			self.send_header('Content-Type', 'text/html')
+			self.send_header('Content-Type', 'text/json')
 			self.end_headers()
 			self.wfile.write(json.dumps({"transfers":res}))
+
+		if request_type == 'get_user_currency':
+			res = comm.get_user_currency(request)
+			if 'ERROR' in res:
+				self.send_response(400)
+				self.send_header('Content-Type', 'text/html')
+				self.end_headers()
+				self.wfile.write(res)
+				return
+			self.send_response(200)
+			self.send_header('Content-Type', 'text/json')
+			self.end_headers()
+			self.wfile.write(json.dumps(res))
+
+		if request_type == 'do_transfer':
+			res = comm.do_transfer(request)
+			if 'ERROR' in res:
+				self.send_response(400)
+			else:
+				self.send_response(200)
+			self.send_header('Content-Type', 'text/html')
+			self.end_headers()
+			self.wfile.write(res)
 
 
 

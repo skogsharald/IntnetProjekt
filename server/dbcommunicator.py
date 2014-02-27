@@ -1,18 +1,19 @@
 import psycopg2
 import MySQLdb
-
+import time
 class DBcommunicator:
 
 	def add_user(self, request):
 		data = request[2].split('&')
-		if len(data) < 5:
+		try:
+			fname = data[0].split('=')[1]
+			lname = data[1].split('=')[1]
+			username = data[2].split('=')[1]
+			password = data[3].split('=')[1]
+			country = data[4].split('=')[1]
+			email = data[5].split('=')[1]
+		except IndexError:
 			return 'ERROR: Too few arguments'
-		fname = data[0].split('=')[1]
-		lname = data[1].split('=')[1]
-		username = data[2].split('=')[1]
-		password = data[3].split('=')[1]
-		country = data[4].split('=')[1]
-		email = data[5].split('=')[1]
 		connection = MySQLdb.connect(host='localhost', user='intnetuser', db='intnet', passwd='hejintnet')
 		cursor = connection.cursor()
 		cursor.execute('SELECT * FROM users WHERE username = %s', username)
@@ -34,7 +35,6 @@ class DBcommunicator:
 		cursor = connection.cursor(MySQLdb.cursors.DictCursor)
 		cursor.execute('SELECT id,fname,lname,username,password,country,email FROM users')
 		users = cursor.fetchall()
-		print len(users)
 		if len(users) == 0:
 			message = 'ERROR: No users in database'
 		else:
@@ -45,10 +45,11 @@ class DBcommunicator:
 
 	def login_user(self, request):
 		data = request[2].split('&')
-		if len(data) < 2:
+		try:
+			username = data[0].split('=')[1]
+			password = data[1].split('=')[1]
+		except IndexError:
 			return 'ERROR: Too few arguments'
-		username = data[0].split('=')[1]
-		password = data[1].split('=')[1]
 		connection = MySQLdb.connect(host='localhost', user='intnetuser', db='intnet', passwd='hejintnet')
 		cursor = connection.cursor(MySQLdb.cursors.DictCursor)
 		cursor.execute('SELECT * FROM users WHERE username = %s AND password = %s', (username, password))
@@ -63,10 +64,10 @@ class DBcommunicator:
 
 	def get_transfers(self, request):
 		data = request[2].split('&')
-		print data
-		if data[0] == '':
+		try:
+			username = data[0].split('=')[1]
+		except IndexError:
 			return 'ERROR: Too few arguments'
-		username = data[0].split('=')[1]
 		connection = MySQLdb.connect(host='localhost', user='intnetuser', db='intnet', passwd='hejintnet')
 		cursor = connection.cursor(MySQLdb.cursors.DictCursor)
 		cursor.execute('SELECT * FROM transfers where fromUser = %s', username)
@@ -75,5 +76,40 @@ class DBcommunicator:
 		connection.close()
 		return transfers
 
+	def get_user_currency(self, request):
+		data = request[2].split('&')
+		try:
+			country = data[0].split('=')[1]
+		except IndexError:
+			return 'ERROR: Too few arguments'
+		connection = MySQLdb.connect(host='localhost', user='intnetuser', db='intnet', passwd='hejintnet')
+		cursor = connection.cursor(MySQLdb.cursors.DictCursor)
+		cursor.execute('SELECT currency FROM countries where countryName= %s', country)
+		currency = cursor.fetchone()
+		cursor.close()
+		connection.close()
+		return currency;
+
+	def do_transfer(self, request): 
+		data = request[2].split('&')
+		try:
+			fromUser = int(data[0].split('=')[1])
+			toUser = int(data[1].split('=')[1])
+			amount = float(data[2].split('=')[1])
+		except IndexError:
+			return 'ERROR: Too few arguments'
+		except ValueError:
+			return 'ERROR: amount is not a float value'
+		date = time.strftime('%Y-%m-%d %H:%M:%S')
+		connection = MySQLdb.connect(host='localhost', user='intnetuser', db='intnet', passwd='hejintnet')
+		cursor = connection.cursor(MySQLdb.cursors.DictCursor)
+		try:
+			cursor.execute('INSERT INTO transfers(fromUser, toUser, amount, dt) VALUES (%s,%s,%s,%s)', (fromUser, toUser, amount, date))
+			connection.commit()
+		except:
+			connection.rollback()
+		cursor.close()
+		connection.close()
+		return 'Transfer complete'
 
 

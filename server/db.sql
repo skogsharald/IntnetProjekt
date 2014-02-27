@@ -3,6 +3,7 @@ use intnet;
 drop table users;
 drop table transfers;
 drop table rates;
+drop table countries;
 
 CREATE TABLE users(
 	id int NOT NULL AUTO_INCREMENT,
@@ -19,23 +20,34 @@ CREATE TABLE transfers(
 	id int NOT NULL AUTO_INCREMENT,
 	fromUser int,
 	toUser int,
-	amount int,
-	dt date,
+	amount float,
+	dt datetime,
 	PRIMARY KEY(id)
 );
 
 CREATE TABLE rates(
+	id int NOT NULL AUTO_INCREMENT,
 	fromCurr varchar(64),
 	toCurr varchar(64),
-	rate float
+	rate float,
+	PRIMARY KEY(id)
 );
 
-INSERT INTO rates VALUES ('SEK', 'USD', 0.154);
-INSERT INTO rates VALUES ('USD', 'SEK', 6.4935);
-INSERT INTO rates VALUES ('GBP', 'SEK', 10.8051);
-INSERT INTO rates VALUES ('GBP', 'USD', 1.664);
-INSERT INTO rates VALUES ('SEK', 'GBP', 0.09254);
-INSERT INTO rates VALUES ('USD', 'GBP', 0.60096);
+CREATE TABLE countries(
+	countryName varchar(64),
+	currency varchar(64),
+	PRIMARY KEY(countryName)
+);
+
+INSERT INTO rates(fromCurr, toCurr, rate) VALUES ('SEK', 'USD', 0.154);
+INSERT INTO rates(fromCurr, toCurr, rate) VALUES ('USD', 'SEK', 6.4935);
+INSERT INTO rates(fromCurr, toCurr, rate) VALUES ('GBP', 'SEK', 10.8051);
+INSERT INTO rates(fromCurr, toCurr, rate) VALUES ('GBP', 'USD', 1.664);
+INSERT INTO rates(fromCurr, toCurr, rate) VALUES ('SEK', 'GBP', 0.09254);
+INSERT INTO rates(fromCurr, toCurr, rate) VALUES ('USD', 'GBP', 0.60096);
+INSERT INTO countries VALUES ('USA', 'USD');
+INSERT INTO countries VALUES ('Sweden', 'SEK');
+INSERT INTO countries VALUES ('GreatBritain', 'GBP');
 
 
 
