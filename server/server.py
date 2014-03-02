@@ -103,6 +103,19 @@ class RequestHandler(BaseHTTPRequestHandler):
 			self.end_headers()
 			self.wfile.write(res)
 
+		if request_type == 'update_user':
+			res = comm.update_user(request)
+			if 'ERROR' in res:
+				self.send_response(400)
+				self.send_header('Content-Type', 'text/html')
+				self.end_headers()
+				self.wfile.write(res)
+				return
+			self.send_response(200)
+			self.send_header('Content-Type', 'text/json')
+			self.end_headers()
+			self.wfile.write(json.dumps(res))
+
 
 
 def run_server(server):
