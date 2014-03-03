@@ -21,6 +21,8 @@ CREATE TABLE transfers(
 	fromUser int,
 	toUser int,
 	amount float,
+	fromCurr varchar(64),
+	type varchar(64),
 	dt datetime,
 	PRIMARY KEY(id)
 );

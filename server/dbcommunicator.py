@@ -115,6 +115,8 @@ class DBcommunicator:
 			fromUser = int(data[0].split('=')[1])
 			toUser = int(data[1].split('=')[1])
 			amount = float(data[2].split('=')[1])
+			fromCurr = data[3].split('=')[1]
+			transferType = data[4].split('=')[1]
 		except IndexError:
 			cursor.close()
 			connection.close()
@@ -127,7 +129,8 @@ class DBcommunicator:
 		connection = MySQLdb.connect(host='localhost', user='intnetuser', db='intnet', passwd='hejintnet')
 		cursor = connection.cursor(MySQLdb.cursors.DictCursor)
 		try:
-			cursor.execute('INSERT INTO transfers(fromUser, toUser, amount, dt) VALUES (%s,%s,%s,%s)', (fromUser, toUser, amount, date))
+			cursor.execute('INSERT INTO transfers(fromUser, toUser, amount, fromCurr, type, dt) VALUES (%s,%s,%s,%s)', 
+				(fromUser, toUser, amount, fromCurr, transferType, date))
 			connection.commit()
 		except:
 			connection.rollback()
