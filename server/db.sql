@@ -1,4 +1,4 @@
-use intnet;
+use ludjan;
 
 drop table users;
 drop table transfers;

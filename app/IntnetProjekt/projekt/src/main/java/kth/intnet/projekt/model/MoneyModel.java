@@ -20,10 +20,14 @@ public class MoneyModel extends Observable{
         this.currentUser = currentUser;
     }
 
-    public void createNewTransaction(int fromUser, int toUser, float amount){
-        Transaction t = new Transaction(fromUser, toUser, amount);
+    public void createNewTransaction(int fromUser, int toUser, float amount, String fromCurr, String type){
+        Transaction t = new Transaction(fromUser, toUser, amount, fromCurr, type);
         // Add transaction in database
         notifyObservers("Transaction added");
+    }
+
+    public void addNewUser(String fname, String lname, String username, String password, String country, String email){
+
     }
 
     public List<Transaction> getAllTransactions(int userId){
@@ -31,9 +35,21 @@ public class MoneyModel extends Observable{
         return null;
     }
 
+    public User loginUser(String username, String password){
+        return null;
+    }
+
     public List<User> getAllUsers(){
         // retrieve all users in database
         return null;
+    }
+
+    public void updateUser(int userId){
+
+    }
+
+    public void doTransfer(String fromUser, String toUser, float amount, String fromCurr, String type){
+
     }
 
     public String getCurrency(String getCountry){

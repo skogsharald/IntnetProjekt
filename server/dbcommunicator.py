@@ -3,6 +3,7 @@ import MySQLdb
 import time
 
 #TODO: Change host to mysql-vt2013.csc.kth.se:3306/ludjan
+# user ludjanadmin, pass v1YiRrr4
 class DBcommunicator:
 
 	def add_user(self, request):
@@ -16,7 +17,7 @@ class DBcommunicator:
 			email = data[5].split('=')[1]
 		except IndexError:
 			return 'ERROR: Too few arguments'
-		connection = MySQLdb.connect(host='localhost', user='intnetuser', db='intnet', passwd='hejintnet')
+		connection = MySQLdb.connect(host='mysql-vt2013.csc.kth.se', user='ludjanadmin', db='ludjan', passwd='v1YiRrr4')
 		cursor = connection.cursor()
 		cursor.execute('SELECT * FROM users WHERE username = %s', username)
 		res1 = cursor.fetchone()
@@ -37,7 +38,7 @@ class DBcommunicator:
 
 
 	def get_users(self):
-		connection = MySQLdb.connect(host='localhost', user='intnetuser', db='intnet', passwd='hejintnet')
+		connection = MySQLdb.connect(host='mysql-vt2013.csc.kth.se', user='ludjanadmin', db='ludjan', passwd='v1YiRrr4')
 		cursor = connection.cursor(MySQLdb.cursors.DictCursor)
 		cursor.execute('SELECT id,fname,lname,username,password,country,email FROM users')
 		users = cursor.fetchall()
@@ -58,7 +59,7 @@ class DBcommunicator:
 			cursor.close()
 			connection.close()
 			return 'ERROR: Too few arguments'
-		connection = MySQLdb.connect(host='localhost', user='intnetuser', db='intnet', passwd='hejintnet')
+		connection = MySQLdb.connect(host='mysql-vt2013.csc.kth.se', user='ludjanadmin', db='ludjan', passwd='v1YiRrr4')
 		cursor = connection.cursor(MySQLdb.cursors.DictCursor)
 		cursor.execute('SELECT * FROM users WHERE username = %s AND password = %s', (username, password))
 		user = cursor.fetchone()
@@ -82,7 +83,7 @@ class DBcommunicator:
 			cursor.close()
 			connection.close()
 			return 'ERROR: userID is not an integer value'
-		connection = MySQLdb.connect(host='localhost', user='intnetuser', db='intnet', passwd='hejintnet')
+		connection = MySQLdb.connect(host='mysql-vt2013.csc.kth.se', user='ludjanadmin', db='ludjan', passwd='v1YiRrr4')
 		cursor = connection.cursor(MySQLdb.cursors.DictCursor)
 		cursor.execute('SELECT id, fromUser, toUser, amount, dt FROM transfers where fromUser = %s', userID)
 		transfers = cursor.fetchall()
@@ -101,7 +102,7 @@ class DBcommunicator:
 			cursor.close()
 			connection.close()
 			return 'ERROR: Too few arguments'
-		connection = MySQLdb.connect(host='localhost', user='intnetuser', db='intnet', passwd='hejintnet')
+		connection = MySQLdb.connect(host='mysql-vt2013.csc.kth.se', user='ludjanadmin', db='ludjan', passwd='v1YiRrr4')
 		cursor = connection.cursor(MySQLdb.cursors.DictCursor)
 		cursor.execute('SELECT currency FROM countries where countryName= %s', country)
 		currency = cursor.fetchone()
@@ -126,7 +127,7 @@ class DBcommunicator:
 			connection.close()
 			return 'ERROR: only float and integer values are allowed'
 		date = time.strftime('%Y-%m-%d %H:%M:%S')
-		connection = MySQLdb.connect(host='localhost', user='intnetuser', db='intnet', passwd='hejintnet')
+		connection = MySQLdb.connect(host='mysql-vt2013.csc.kth.se', user='ludjanadmin', db='ludjan', passwd='v1YiRrr4')
 		cursor = connection.cursor(MySQLdb.cursors.DictCursor)
 		try:
 			cursor.execute('INSERT INTO transfers(fromUser, toUser, amount, fromCurr, type, dt) VALUES (%s,%s,%s,%s)', 
@@ -152,13 +153,16 @@ class DBcommunicator:
 			cursor.close()
 			connection.close()
 			return 'ERROR: Too few arguments'
-		connection = MySQLdb.connect(host='localhost', user='intnetuser', db='intnet', passwd='hejintnet')
+		connection = MySQLdb.connect(host='mysql-vt2013.csc.kth.se', user='ludjanadmin', db='ludjan', passwd='v1YiRrr4')
 		cursor = connection.cursor(MySQLdb.cursors.DictCursor)
 		try:
 			cursor.execute('UPDATE users SET fname = %s, lname= %s, username = %s, password = %s, country = %s, email = %s  WHERE id = %s ', 
 				(fname, lname, username, password, country, email, userId))
 			connection.commit()
 		except:
+			cursor.close()
+			connection.close()
+			return 'ERROR: Something went wrong updating'
 			connection.rollback()
 		cursor.close()
 		connection.close()
