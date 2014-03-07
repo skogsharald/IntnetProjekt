@@ -31,7 +31,7 @@ public class ServerHandler {
         gson = new Gson();
     }
 
-    public User loginUser(String username, String password) throws IOException  {
+    public String loginUser(String username, String password) throws IOException  {
         InputStream is = null;
         URL url = new URL("http://localhost:8888/login_user/username="+username+"&password="+password);
         try {
@@ -61,14 +61,14 @@ public class ServerHandler {
                 return null;
             }
             Log.e("Login", sb.toString());
-            return gson.fromJson(sb.toString(), User.class);
+            return sb.toString();
         } finally {
             if (is != null) {
                 is.close();
             }
         }
     }
-    public boolean addUser(String fname, String lname, String username, String password, String country, String email) throws IOException  {
+    public String addUser(String fname, String lname, String username, String password, String country, String email) throws IOException  {
         InputStream is = null;
         URL url = new URL("http://localhost:8888/add_user/fname="+fname+"&lname="+lname+"&username="+
             username+"&password="+password+"&country="+country+"&email="+email);
@@ -82,7 +82,7 @@ public class ServerHandler {
             conn.connect();
             int response = conn.getResponseCode();
             if(response == 200){
-                return false;
+                return null;
             }
             is = conn.getInputStream();
 
@@ -96,10 +96,10 @@ public class ServerHandler {
             br.close();
             if(sb.toString().contains("ERROR")){
                 Log.e("Adding user failed", sb.toString());
-                return false;
+                return null;
             }
             Log.e("Adding user", sb.toString());
-            return true;
+            return sb.toString();
         } finally {
             if (is != null) {
                 is.close();
@@ -107,7 +107,7 @@ public class ServerHandler {
         }
     }
 
-    public void newTransaction(String fromUser, String toUser, float amount, String fromCurr, String type) throws IOException  {
+    public String newTransaction(String fromUser, String toUser, float amount, String fromCurr, String type) throws IOException  {
         InputStream is = null;
         URL url = new URL("http://localhost:8888/do_transfer/fromuser="+fromUser+"&touser="+toUser+
             "&amount="+amount+"&fromcurr="+fromCurr+"&type="+type);
@@ -121,7 +121,7 @@ public class ServerHandler {
             conn.connect();
             int response = conn.getResponseCode();
             if(response == 200){
-                return;
+                return null;
             }
             is = conn.getInputStream();
 
@@ -135,9 +135,10 @@ public class ServerHandler {
             br.close();
             if(sb.toString().contains("ERROR")){
                 Log.e("Transaction failed", sb.toString());
-                return;
+                return null;
             }
             Log.e("Transaction", sb.toString());
+            return sb.toString();
         } finally {
             if (is != null) {
                 is.close();
@@ -145,7 +146,7 @@ public class ServerHandler {
         }
     }
 
-    public List<User> getUsers() throws IOException  {
+    public String getUsers() throws IOException  {
         InputStream is = null;
         URL url = new URL("http://localhost:8888/get_users/");
         try {
@@ -175,7 +176,81 @@ public class ServerHandler {
                 return null;
             }
             Log.e("Users", sb.toString());
-            return null; // Return list here?
+            return sb.toString();
+        } finally {
+            if (is != null) {
+                is.close();
+            }
+        }
+    }
+    public String getTransactions() throws IOException  {
+        InputStream is = null;
+        URL url = new URL("http://localhost:8888/get_transfers/");
+        try {
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setReadTimeout(readTimeOut /* milliseconds */);
+            conn.setConnectTimeout(connectTimeOut /* milliseconds */);
+            conn.setRequestMethod("GET");
+            conn.setDoInput(true);
+            // Starts the query
+            conn.connect();
+            int response = conn.getResponseCode();
+            if(response == 200){
+                return null;
+            }
+            is = conn.getInputStream();
+
+            // Convert the InputStream into a string
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null){
+                sb.append(line+"\n");
+            }
+            br.close();
+            if(sb.toString().contains("ERROR")){
+                Log.e("Something went wrong", sb.toString());
+                return null;
+            }
+            Log.e("Users", sb.toString());
+            return sb.toString();
+        } finally {
+            if (is != null) {
+                is.close();
+            }
+        }
+    }
+    public String getUserCurrency(String country) throws IOException  {
+        InputStream is = null;
+        URL url = new URL("http://localhost:8888/get_user_currency/country="+country);
+        try {
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setReadTimeout(readTimeOut /* milliseconds */);
+            conn.setConnectTimeout(connectTimeOut /* milliseconds */);
+            conn.setRequestMethod("GET");
+            conn.setDoInput(true);
+            // Starts the query
+            conn.connect();
+            int response = conn.getResponseCode();
+            if(response == 200){
+                return null;
+            }
+            is = conn.getInputStream();
+
+            // Convert the InputStream into a string
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null){
+                sb.append(line+"\n");
+            }
+            br.close();
+            if(sb.toString().contains("ERROR")){
+                Log.e("Something went wrong", sb.toString());
+                return null;
+            }
+            Log.e("Users", sb.toString());
+            return sb.toString();
         } finally {
             if (is != null) {
                 is.close();

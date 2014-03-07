@@ -11,6 +11,7 @@ import java.util.Observable;
 public class MoneyModel extends Observable{
     private User currentUser;
 
+
     public User getCurrentUser() {
         return currentUser;
     }
