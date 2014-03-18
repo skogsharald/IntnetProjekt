@@ -24,6 +24,11 @@ public class ServerHandler {
     private int connectTimeOut;
     private Gson gson;
 
+    /**
+     * This is where the connection with the server actually occurs.
+     * Remember to change "localhost" to the server's IP.
+     * @throws MalformedURLException
+     */
     public ServerHandler() throws MalformedURLException {
 //      this.context = context;
         readTimeOut = 2000;
