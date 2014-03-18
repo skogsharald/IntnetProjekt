@@ -4,15 +4,24 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.EditText;
 
 import kth.intnet.projekt.R;
+import kth.intnet.projekt.android.view.LoginView;
+import kth.intnet.projekt.model.MoneyModel;
 
 public class LoginActivity extends Activity {
-
+    private LoginView loginView;
+    private MoneyModel model;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        model = ((MoneyApplication) this.getApplication()).getModel();
+
+        LoginView loginView = new LoginView(findViewById(R.layout.activity_login), model);
     }
 
 

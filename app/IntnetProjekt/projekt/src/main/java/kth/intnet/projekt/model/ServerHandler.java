@@ -28,7 +28,6 @@ public class ServerHandler {
 //      this.context = context;
         readTimeOut = 2000;
         connectTimeOut = 3000;
-        gson = new Gson();
     }
 
     public String loginUser(String username, String password) throws IOException  {
@@ -43,7 +42,7 @@ public class ServerHandler {
             // Starts the query
             conn.connect();
             int response = conn.getResponseCode();
-            if(response == 200){
+            if(response == 400){
                 return null;
             }
             is = conn.getInputStream();
@@ -71,7 +70,7 @@ public class ServerHandler {
     public String addUser(String fname, String lname, String username, String password, String country, String email) throws IOException  {
         InputStream is = null;
         URL url = new URL("http://localhost:8888/add_user/fname="+fname+"&lname="+lname+"&username="+
-            username+"&password="+password+"&country="+country+"&email="+email);
+                username+"&password="+password+"&country="+country+"&email="+email);
         try {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setReadTimeout(readTimeOut /* milliseconds */);
@@ -81,7 +80,7 @@ public class ServerHandler {
             // Starts the query
             conn.connect();
             int response = conn.getResponseCode();
-            if(response == 200){
+            if(response == 400){
                 return null;
             }
             is = conn.getInputStream();
@@ -110,7 +109,7 @@ public class ServerHandler {
     public String newTransaction(String fromUser, String toUser, float amount, String fromCurr, String type) throws IOException  {
         InputStream is = null;
         URL url = new URL("http://localhost:8888/do_transfer/fromuser="+fromUser+"&touser="+toUser+
-            "&amount="+amount+"&fromcurr="+fromCurr+"&type="+type);
+                "&amount="+amount+"&fromcurr="+fromCurr+"&type="+type);
         try {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setReadTimeout(readTimeOut /* milliseconds */);
@@ -120,7 +119,7 @@ public class ServerHandler {
             // Starts the query
             conn.connect();
             int response = conn.getResponseCode();
-            if(response == 200){
+            if(response == 400){
                 return null;
             }
             is = conn.getInputStream();
@@ -158,7 +157,7 @@ public class ServerHandler {
             // Starts the query
             conn.connect();
             int response = conn.getResponseCode();
-            if(response == 200){
+            if(response == 400){
                 return null;
             }
             is = conn.getInputStream();
@@ -195,7 +194,7 @@ public class ServerHandler {
             // Starts the query
             conn.connect();
             int response = conn.getResponseCode();
-            if(response == 200){
+            if(response == 400){
                 return null;
             }
             is = conn.getInputStream();
@@ -220,6 +219,45 @@ public class ServerHandler {
             }
         }
     }
+    public String updateUser(int userId, String fname, String lname, String username, String password, String country, String email) throws IOException {
+        InputStream is = null;
+        URL url = new URL("http://localhost:8888/update_user/userid=" + userId + "fname=" + fname + "&lname=" + lname + "&username=" +
+                username + "&password=" + password + "&country=" + country + "&email=" + email);
+        try {
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setReadTimeout(readTimeOut /* milliseconds */);
+            conn.setConnectTimeout(connectTimeOut /* milliseconds */);
+            conn.setRequestMethod("GET");
+            conn.setDoInput(true);
+            // Starts the query
+            conn.connect();
+            int response = conn.getResponseCode();
+            if (response == 400) {
+                return null;
+            }
+            is = conn.getInputStream();
+
+            // Convert the InputStream into a string
+            // Convert the InputStream into a string
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line + "\n");
+            }
+            br.close();
+            if (sb.toString().contains("ERROR")) {
+                Log.e("Updating user failed", sb.toString());
+                return null;
+            }
+            Log.e("Updating user", sb.toString());
+            return sb.toString();
+        } finally {
+            if (is != null) {
+                is.close();
+            }
+        }
+    }
     public String getUserCurrency(String country) throws IOException  {
         InputStream is = null;
         URL url = new URL("http://localhost:8888/get_user_currency/country="+country);
@@ -232,7 +270,7 @@ public class ServerHandler {
             // Starts the query
             conn.connect();
             int response = conn.getResponseCode();
-            if(response == 200){
+            if(response == 400){
                 return null;
             }
             is = conn.getInputStream();

@@ -114,7 +114,7 @@ class RequestHandler(BaseHTTPRequestHandler):
 			self.send_response(200)
 			self.send_header('Content-Type', 'text/json')
 			self.end_headers()
-			self.wfile.write(json.dumps(res))
+			self.wfile.write(res)
 
 
 
