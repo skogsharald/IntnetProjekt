@@ -17,11 +17,11 @@ public class LoginActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-
         model = ((MoneyApplication) this.getApplication()).getModel();
 
-        LoginView loginView = new LoginView(findViewById(R.layout.activity_login), model);
+        setContentView(R.layout.activity_login);
+
+        LoginView loginView = new LoginView(findViewById(R.layout.activity_login), this, model);
     }
 
 

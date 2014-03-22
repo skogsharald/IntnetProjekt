@@ -11,7 +11,7 @@ public class MoneyApplication extends Application {
     private MoneyModel mModel = new MoneyModel();
 
     public MoneyModel getModel(){
-        return mModel;
+      return mModel;
     }
 
     public void setModel(MoneyModel mModel){

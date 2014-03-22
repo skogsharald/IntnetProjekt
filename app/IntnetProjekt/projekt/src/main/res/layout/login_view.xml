@@ -9,7 +9,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Enter username" >
+        android:drawablePadding="5dp"
+        android:drawableLeft="@drawable/man_24"
+        android:hint="Username"
+        android:inputType="text">
 
         <requestFocus />
     </EditText>
@@ -19,25 +22,36 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Enter password"
+        android:drawableLeft="@drawable/lock_24"
+        android:drawablePadding="5dp"
+        android:layout_marginTop="5dp"
+        android:hint="Password"
         android:inputType="textPassword" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <Button
-            android:id="@+id/createUserButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Create new user" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical" >
 
         <Button
             android:id="@+id/loginButton"
-            android:layout_weight="2"
-            android:layout_width="wrap_content"
+            android:text="Login"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Login" />
+            android:background="@drawable/buttonshape" />
+
+        <Button
+            android:id="@+id/createUserButton"
+            android:text="Create new account"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/buttonshape" />
 
     </LinearLayout>
 
