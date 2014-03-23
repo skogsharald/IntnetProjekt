@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import kth.intnet.projekt.R;
+import kth.intnet.projekt.android.controller.LoginViewController;
 import kth.intnet.projekt.android.view.LoginView;
 import kth.intnet.projekt.model.MoneyModel;
 
@@ -22,6 +23,7 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.activity_login);
 
         LoginView loginView = new LoginView(findViewById(R.layout.activity_login), this, model);
+        LoginViewController loginViewController = new LoginViewController(loginView, this, model);
     }
 
 

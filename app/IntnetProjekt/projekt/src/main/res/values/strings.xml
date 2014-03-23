@@ -4,5 +4,11 @@
     <string name="app_name">IntnetProjekt</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="country_prompt">Choose a country</string>
+    <string-array name="country_arrays">
+        <item>USA</item>
+        <item>Sweden</item>
+        <item>Great Britain</item>
+    </string-array>
 
 </resources>

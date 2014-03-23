@@ -20,6 +20,9 @@
         <activity
             android:name="kth.intnet.projekt.android.LoginActivity"
             android:label="@string/app_name"></activity>
+        <activity
+            android:name="kth.intnet.projekt.android.NewUserActivity"
+            android:label="@string/app_name"></activity>
     </application>
 
 </manifest>
