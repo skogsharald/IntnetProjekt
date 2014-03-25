@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.View;
 
 import kth.intnet.projekt.android.LoginActivity;
+import kth.intnet.projekt.android.MenuActivity;
 import kth.intnet.projekt.android.MoneyApplication;
 import kth.intnet.projekt.android.NewUserActivity;
 import kth.intnet.projekt.android.view.LoginView;
@@ -33,6 +34,8 @@ public class LoginViewController implements View.OnClickListener {
     public void onClick(View v) {
         if(v.equals(view.loginButton)){
             // Login user
+            Intent intent = new Intent(activity, MenuActivity.class);
+            activity.startActivity(intent);
         }
         if(v.equals(view.createUserButton)){
             // Create new user
