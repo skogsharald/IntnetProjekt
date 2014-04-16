@@ -41,7 +41,7 @@ public class NewUserViewController implements View.OnClickListener{
      * Fill spinner with an asynchronous call to server
      */
     private void fillSpinner(){
-           
+
     }
 
     /**
