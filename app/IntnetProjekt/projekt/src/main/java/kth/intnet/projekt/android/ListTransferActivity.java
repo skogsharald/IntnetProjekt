@@ -6,23 +6,26 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import kth.intnet.projekt.R;
-import kth.intnet.projekt.android.view.MakeTransferView;
+import kth.intnet.projekt.android.controller.ListTransferViewController;
+import kth.intnet.projekt.android.view.ListTransfersView;
 import kth.intnet.projekt.model.MoneyModel;
 
 /**
  * Created by Sandra Grosz on 2014-04-16.
  */
-public class MakeTransferActivity extends Activity{
-    private MakeTransferView makeTransferView;
+public class ListTransferActivity extends Activity{
+    private ListTransfersView listTransfersView;
     private MoneyModel model;
+    private ListTransferViewController listTransferViewController;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         model = ((MoneyApplication) this.getApplication()).getModel();
 
-        setContentView(R.layout.activity_make_transfer);
+        setContentView(R.layout.activity_list_transfer);
 
-        makeTransferView = new MakeTransferView(findViewById(R.layout.activity_make_transfer), this, model);
+        listTransfersView = new ListTransfersView(findViewById(R.layout.activity_list_transfer), this, model);
+        listTransferViewController = new ListTransferViewController(listTransfersView, this, model);
     }
 
 
