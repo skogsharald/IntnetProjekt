@@ -9,7 +9,12 @@ import kth.intnet.projekt.model.ServerTask;
  * Created by Ludde on 2014-03-03.
  */
 public class MoneyApplication extends Application {
-    private MoneyModel mModel = new MoneyModel(this.getApplicationContext());
+    private MoneyModel mModel;
+
+    public void onCreate(){
+        super.onCreate();
+        mModel = new MoneyModel(getApplicationContext());
+    }
 
     public MoneyModel getModel(){
       return mModel;

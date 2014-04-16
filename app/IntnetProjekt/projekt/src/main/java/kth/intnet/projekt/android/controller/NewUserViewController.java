@@ -3,6 +3,8 @@ package kth.intnet.projekt.android.controller;
 import android.app.Activity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.google.gson.Gson;
 
@@ -10,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import kth.intnet.projekt.R;
 import kth.intnet.projekt.android.view.NewUserView;
 import kth.intnet.projekt.model.Country;
 import kth.intnet.projekt.model.CountryList;
@@ -38,10 +41,20 @@ public class NewUserViewController implements View.OnClickListener{
     }
 
     /**
-     * Fill spinner with an asynchronous call to server
+     * Fill spinner countries that are in model
      */
     private void fillSpinner(){
+        CountryList countries = moneyModel.getCountries();
+        List<String> spinnerList = new ArrayList<String>();
+        for(Country c: countries.getCountryList()){
+            spinnerList.add(c.getCountryName());
+        }
 
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity.getApplicationContext(), android.R.layout.simple_spinner_item, spinnerList);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        Spinner spinner = (Spinner) activity.findViewById(R.id.countySpinner);
+        spinner.setAdapter(adapter);
     }
 
     /**
