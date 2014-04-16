@@ -29,6 +29,9 @@
         <activity
             android:name="kth.intnet.projekt.android.MakeTransferActivity"
             android:label="@string/app_name"/>
+        <activity
+            android:name="kth.intnet.projekt.android.ListTransferActivity"
+            android:label="@string/app_name"/>
     </application>
 
 </manifest>

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
 
+import kth.intnet.projekt.android.ListTransferActivity;
 import kth.intnet.projekt.android.MakeTransferActivity;
 import kth.intnet.projekt.android.MenuActivity;
 import kth.intnet.projekt.android.NewUserActivity;
@@ -34,6 +35,8 @@ public class MenuViewController implements View.OnClickListener {
     public void onClick(View v) {
         if(v.equals(view.listTransfersButton)){
             // List transfers
+            Intent intent = new Intent(activity, ListTransferActivity.class);
+            activity.startActivity(intent);
         }
         if(v.equals(view.makeTransferButton)){
             // Make transfers
