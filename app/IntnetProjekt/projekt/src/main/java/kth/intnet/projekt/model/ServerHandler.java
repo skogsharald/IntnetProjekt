@@ -37,7 +37,7 @@ public class ServerHandler {
 
     public String loginUser(String username, String password) throws IOException  {
         InputStream is = null;
-        URL url = new URL("http://localhost:8888/login_user/username="+username+"&password="+password);
+        URL url = new URL("http://130.229.147.151:8000/login_user/username="+username+"&password="+password);
         try {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setReadTimeout(readTimeOut /* milliseconds */);
@@ -48,6 +48,7 @@ public class ServerHandler {
             conn.connect();
             int response = conn.getResponseCode();
             if(response == 400){
+                Log.e("RESPONSE", String.valueOf(response));
                 return null;
             }
             is = conn.getInputStream();
@@ -60,6 +61,7 @@ public class ServerHandler {
                 sb.append(line+"\n");
             }
             br.close();
+            Log.e("SERVER RESULT", sb.toString());
             if(sb.toString().contains("ERROR")){
                 Log.e("Login failed", sb.toString());
                 return null;

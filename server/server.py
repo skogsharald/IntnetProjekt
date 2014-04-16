@@ -7,8 +7,8 @@ import json
 from dbcommunicator import DBcommunicator
 
 
-HOST_NAME = 'localhost'
-PORT = 8888
+HOST_NAME = "0.0.0.0"
+PORT = 8000
 
 
 #Hack to speed up
@@ -130,7 +130,7 @@ if __name__ == '__main__':
 		#Start HTTP server thread
 		httpThread = threading.Thread(target = run_server, args = (server, ))
 		httpThread.start()
-		print "----HTTP Server started"
+		print "----HTTP Server started on port %d" % PORT
 
 		# Keep alive
 		while True:

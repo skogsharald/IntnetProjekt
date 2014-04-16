@@ -11,11 +11,13 @@ import kth.intnet.projekt.R;
 import kth.intnet.projekt.android.controller.LoginViewController;
 import kth.intnet.projekt.android.view.LoginView;
 import kth.intnet.projekt.model.MoneyModel;
+import kth.intnet.projekt.model.ServerTask;
 
 public class LoginActivity extends Activity {
     private LoginView loginView;
     private MoneyModel model;
     private LoginViewController loginViewController;
+    private ServerTask serverTask;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
