@@ -13,11 +13,9 @@ import java.net.MalformedURLException;
 public class ServerTask extends AsyncTask<String, Integer, String> {
     private ServerHandler serverHandler;
     private Context context;
-    private String result;
 
-    public ServerTask(Context context, String result){
+    public ServerTask(Context context){
         this.context = context;
-        this.result = result;
         try {
             serverHandler = new ServerHandler();
         } catch (MalformedURLException e) {
@@ -116,12 +114,5 @@ public class ServerTask extends AsyncTask<String, Integer, String> {
         }
         return null;
 
-    }
-
-    @Override
-    public void onPostExecute(String result){
-        if(result != null)
-            this.result = result;
-        this.result = "Login Failed";
     }
 }

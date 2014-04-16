@@ -1,7 +1,12 @@
 package kth.intnet.projekt.model;
 
+import android.content.Context;
 import android.os.TransactionTooLargeException;
+import android.util.Log;
 
+import com.google.gson.Gson;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
@@ -10,8 +15,28 @@ import java.util.Observable;
  */
 public class MoneyModel extends Observable{
     private User currentUser;
-    private String[] countries;
+    private CountryList countries;
+    private Gson gson;
 
+    public MoneyModel(Context context){
+        gson = new Gson();
+        fillCountryList(context);
+    }
+
+    /**
+     * Make an asynchronous call to the server to instantiate the country list
+     * @param context
+     */
+    private void fillCountryList(Context context){
+        ServerTask sTask = new ServerTask(context);
+        sTask.execute("getCurrencies");
+        try{
+            String result = sTask.get();
+            countries = gson.fromJson(result, CountryList.class);
+        } catch(Exception e){
+            Log.e("ERROR", e.getMessage());
+        }
+    }
 
     public User getCurrentUser() {
         return currentUser;
@@ -46,7 +71,7 @@ public class MoneyModel extends Observable{
         return null;
     }
 
-    public String[] getCountries(){
+    public CountryList getCountries(){
         return countries;
     }
 

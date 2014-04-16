@@ -42,14 +42,13 @@ public class LoginViewController implements View.OnClickListener {
     public void onClick(View v) {
         if(v.equals(view.loginButton)){
             // Login user
-            String result = "hejsan";
             String username = view.usernameField.getText().toString();
             String password = view.passwordField.getText().toString();
             if(username != null && password != null) {
-                ServerTask sTask = new ServerTask(activity.getApplicationContext(), result);
+                ServerTask sTask = new ServerTask(activity.getApplicationContext());
                 sTask.execute("loginUser", username, password);
                 try {
-                    result = sTask.get();
+                    String result = sTask.get();
                     if(result == null){
                         Toast.makeText(activity.getApplicationContext(), "Login Failed", Toast.LENGTH_SHORT).show();
                     }
