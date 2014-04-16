@@ -15,6 +15,7 @@ import kth.intnet.projekt.model.MoneyModel;
 public class LoginActivity extends Activity {
     private LoginView loginView;
     private MoneyModel model;
+    private LoginViewController loginViewController;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,8 +23,8 @@ public class LoginActivity extends Activity {
 
         setContentView(R.layout.activity_login);
 
-        LoginView loginView = new LoginView(findViewById(R.layout.activity_login), this, model);
-        LoginViewController loginViewController = new LoginViewController(loginView, this, model);
+        loginView = new LoginView(findViewById(R.layout.activity_login), this, model);
+        loginViewController = new LoginViewController(loginView, this, model);
     }
 
 

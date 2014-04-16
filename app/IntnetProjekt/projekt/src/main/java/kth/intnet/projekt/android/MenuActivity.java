@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import kth.intnet.projekt.R;
+import kth.intnet.projekt.android.controller.MenuViewController;
 import kth.intnet.projekt.android.view.MenuView;
 import kth.intnet.projekt.model.MoneyModel;
 
@@ -13,8 +14,9 @@ import kth.intnet.projekt.model.MoneyModel;
  * Created by Sandra Grosz on 2014-03-25.
  */
 public class MenuActivity extends Activity {
-    MenuView menuView;
-    MoneyModel model;
+    private MenuView menuView;
+    private MoneyModel model;
+    private MenuViewController menuViewController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +26,7 @@ public class MenuActivity extends Activity {
         setContentView(R.layout.activity_menu);
 
         menuView = new MenuView(findViewById(R.layout.activity_menu), this, model);
+        menuViewController = new MenuViewController(menuView, this, model);
     }
 
 
