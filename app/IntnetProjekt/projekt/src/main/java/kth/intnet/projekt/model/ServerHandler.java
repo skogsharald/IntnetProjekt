@@ -189,6 +189,44 @@ public class ServerHandler {
             }
         }
     }
+
+    public String getCountries() throws IOException  {
+        InputStream is = null;
+        URL url = new URL("http://localhost:8888/get_countries/");
+        try {
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setReadTimeout(readTimeOut /* milliseconds */);
+            conn.setConnectTimeout(connectTimeOut /* milliseconds */);
+            conn.setRequestMethod("GET");
+            conn.setDoInput(true);
+            // Starts the query
+            conn.connect();
+            int response = conn.getResponseCode();
+            if(response == 400){
+                return null;
+            }
+            is = conn.getInputStream();
+
+            // Convert the InputStream into a string
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null){
+                sb.append(line+"\n");
+            }
+            br.close();
+            if(sb.toString().contains("ERROR")){
+                Log.e("Something went wrong", sb.toString());
+                return null;
+            }
+            Log.e("Countries", sb.toString());
+            return sb.toString();
+        } finally {
+            if (is != null) {
+                is.close();
+            }
+        }
+    }
     public String getTransactions() throws IOException  {
         InputStream is = null;
         URL url = new URL("http://localhost:8888/get_transfers/");

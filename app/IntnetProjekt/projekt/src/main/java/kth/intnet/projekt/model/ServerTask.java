@@ -57,6 +57,12 @@ public class ServerTask extends AsyncTask<String, Integer, String> {
                 String country = params[5];
                 String email = params[6];
                 String result = serverHandler.addUser(fname, lname, username, password, country, email);
+                if (result != null) {
+                    return result;
+                }
+            } else if (method.equals("getCountries")){
+                // Get all countries
+                String result = serverHandler.getCountries();
                 if(result != null) {
                     return result;
                 }

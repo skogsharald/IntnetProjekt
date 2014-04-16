@@ -10,6 +10,7 @@ import java.util.Observable;
  */
 public class MoneyModel extends Observable{
     private User currentUser;
+    private String[] countries;
 
 
     public User getCurrentUser() {
@@ -43,6 +44,10 @@ public class MoneyModel extends Observable{
     public List<User> getAllUsers(){
         // retrieve all users in database
         return null;
+    }
+
+    public String[] getCountries(){
+        return countries;
     }
 
     public void updateUser(int userId){

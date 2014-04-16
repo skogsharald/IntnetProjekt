@@ -6,15 +6,15 @@ import java.util.List;
  * Created by Ludde on 2014-03-06.
  */
 public class UserList {
-    private User[] userList;
+    private User[] users;
 
     public UserList(){}
 
     public User[] getUserList() {
-        return userList;
+        return users;
     }
 
     public void setUserList(User[] userList) {
-        this.userList = userList;
+        this.users = users;
     }
 }

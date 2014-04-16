@@ -36,6 +36,18 @@ class DBcommunicator:
 		connection.close()
 		return message
 
+	def get_countries(self):
+		connection = MySQLdb.connect(host='mysql-vt2013.csc.kth.se', user='ludjanadmin', db='ludjan', passwd='v1YiRrr4')
+		cursor = connection.cursor(MySQLdb.cursors.DictCursor)
+		cursor.execute('SELECT countryName, currency FROM countries')
+		users = cursor.fetchall()
+		if len(users) == 0:
+			message = 'ERROR: No countries in database'
+		else:
+			message = users
+		cursor.close()
+		connection.close()
+		return message
 
 	def get_users(self):
 		connection = MySQLdb.connect(host='mysql-vt2013.csc.kth.se', user='ludjanadmin', db='ludjan', passwd='v1YiRrr4')

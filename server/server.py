@@ -41,6 +41,16 @@ class RequestHandler(BaseHTTPRequestHandler):
 			self.end_headers()
 			self.wfile.write(res)
 
+		if request_type == 'get_countries':
+			res = comm.get_countries()
+			if 'ERROR' in res:
+				self.send_response(400)
+				return
+			self.send_response(200)
+			self.send_header('Content-Type', 'text/json')
+			self.end_headers()
+			self.wfile.write(json.dumps({"countries":res}))
+
 		if request_type == 'get_users':
 			res = comm.get_users()
 			if 'ERROR' in res:
