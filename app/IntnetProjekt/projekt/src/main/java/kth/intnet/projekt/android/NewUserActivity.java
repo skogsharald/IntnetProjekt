@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import kth.intnet.projekt.R;
+import kth.intnet.projekt.android.controller.NewUserViewController;
 import kth.intnet.projekt.android.view.LoginView;
 import kth.intnet.projekt.android.view.NewUserView;
 import kth.intnet.projekt.model.MoneyModel;
@@ -15,6 +16,7 @@ import kth.intnet.projekt.model.MoneyModel;
  */
 public class NewUserActivity extends Activity{
     private NewUserView newUserView;
+    private NewUserViewController newUserViewController;
     private MoneyModel model;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +26,7 @@ public class NewUserActivity extends Activity{
         setContentView(R.layout.activity_new_user);
 
         newUserView = new NewUserView(findViewById(R.layout.activity_new_user), this, model);
+        newUserViewController = new NewUserViewController(newUserView, this, model);
     }
 
 

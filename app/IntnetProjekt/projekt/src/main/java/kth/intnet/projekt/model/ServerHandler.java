@@ -23,6 +23,7 @@ public class ServerHandler {
     private int readTimeOut;
     private int connectTimeOut;
     private Gson gson;
+    private final String SERVER_ADDRESS = "http://130.229.147.151:8000";
 
     /**
      * This is where the connection with the server actually occurs.
@@ -37,7 +38,7 @@ public class ServerHandler {
 
     public String loginUser(String username, String password) throws IOException  {
         InputStream is = null;
-        URL url = new URL("http://130.229.147.151:8000/login_user/username="+username+"&password="+password);
+        URL url = new URL(SERVER_ADDRESS + "/login_user/username="+username+"&password="+password);
         try {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setReadTimeout(readTimeOut /* milliseconds */);
@@ -76,7 +77,7 @@ public class ServerHandler {
     }
     public String addUser(String fname, String lname, String username, String password, String country, String email) throws IOException  {
         InputStream is = null;
-        URL url = new URL("http://localhost:8888/add_user/fname="+fname+"&lname="+lname+"&username="+
+        URL url = new URL(SERVER_ADDRESS + "/add_user/fname="+fname+"&lname="+lname+"&username="+
                 username+"&password="+password+"&country="+country+"&email="+email);
         try {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -115,7 +116,7 @@ public class ServerHandler {
 
     public String newTransaction(String fromUser, String toUser, float amount, String fromCurr, String type) throws IOException  {
         InputStream is = null;
-        URL url = new URL("http://localhost:8888/do_transfer/fromuser="+fromUser+"&touser="+toUser+
+        URL url = new URL(SERVER_ADDRESS + "/do_transfer/fromuser="+fromUser+"&touser="+toUser+
                 "&amount="+amount+"&fromcurr="+fromCurr+"&type="+type);
         try {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -154,7 +155,7 @@ public class ServerHandler {
 
     public String getUsers() throws IOException  {
         InputStream is = null;
-        URL url = new URL("http://localhost:8888/get_users/");
+        URL url = new URL(SERVER_ADDRESS + "/get_users/");
         try {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setReadTimeout(readTimeOut /* milliseconds */);
@@ -192,7 +193,7 @@ public class ServerHandler {
 
     public String getCountries() throws IOException  {
         InputStream is = null;
-        URL url = new URL("http://localhost:8888/get_countries/");
+        URL url = new URL(SERVER_ADDRESS + "/get_countries/");
         try {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setReadTimeout(readTimeOut /* milliseconds */);
@@ -229,7 +230,7 @@ public class ServerHandler {
     }
     public String getTransactions() throws IOException  {
         InputStream is = null;
-        URL url = new URL("http://localhost:8888/get_transfers/");
+        URL url = new URL(SERVER_ADDRESS + "/get_transfers/");
         try {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setReadTimeout(readTimeOut /* milliseconds */);
@@ -266,7 +267,7 @@ public class ServerHandler {
     }
     public String updateUser(int userId, String fname, String lname, String username, String password, String country, String email) throws IOException {
         InputStream is = null;
-        URL url = new URL("http://localhost:8888/update_user/userid=" + userId + "fname=" + fname + "&lname=" + lname + "&username=" +
+        URL url = new URL(SERVER_ADDRESS + "/update_user/userid=" + userId + "fname=" + fname + "&lname=" + lname + "&username=" +
                 username + "&password=" + password + "&country=" + country + "&email=" + email);
         try {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -305,7 +306,7 @@ public class ServerHandler {
     }
     public String getUserCurrency(String country) throws IOException  {
         InputStream is = null;
-        URL url = new URL("http://localhost:8888/get_user_currency/country="+country);
+        URL url = new URL(SERVER_ADDRESS + "/get_user_currency/country="+country);
         try {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setReadTimeout(readTimeOut /* milliseconds */);

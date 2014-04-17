@@ -15,27 +15,30 @@ import java.util.Observable;
  */
 public class MoneyModel extends Observable{
     private User currentUser;
-    private CountryList countries;
     private Gson gson;
+    private Context context;
 
     public MoneyModel(Context context){
+        this.context = context;
         gson = new Gson();
-        fillCountryList(context);
     }
 
     /**
      * Make an asynchronous call to the server to instantiate the country list
      * @param context
      */
-    private void fillCountryList(Context context){
+    private CountryList fillCountryList(Context context){
         ServerTask sTask = new ServerTask(context);
-        sTask.execute("getCurrencies");
+        sTask.execute("getCountries");
         try{
             String result = sTask.get();
-            countries = gson.fromJson(result, CountryList.class);
+            CountryList countries = gson.fromJson(result, CountryList.class);
+            return countries;
         } catch(Exception e){
             Log.e("ERROR", e.getMessage());
         }
+
+        return null;
     }
 
     public User getCurrentUser() {
@@ -72,7 +75,7 @@ public class MoneyModel extends Observable{
     }
 
     public CountryList getCountries(){
-        return countries;
+        return fillCountryList(context);
     }
 
     public void updateUser(int userId){

@@ -45,10 +45,16 @@ public class NewUserViewController implements View.OnClickListener{
      */
     private void fillSpinner(){
         CountryList countries = moneyModel.getCountries();
+        if(countries == null){
+            Log.e("ERROR", "Countries is null");
+            return;
+        }
         List<String> spinnerList = new ArrayList<String>();
         for(Country c: countries.getCountryList()){
             spinnerList.add(c.getCountryName());
         }
+
+        Log.e("COUNTRIES HEJSAN", spinnerList.toString());
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity.getApplicationContext(), android.R.layout.simple_spinner_item, spinnerList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
