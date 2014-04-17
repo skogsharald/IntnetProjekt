@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import kth.intnet.projekt.R;
+import kth.intnet.projekt.android.controller.MakeTransferViewController;
 import kth.intnet.projekt.android.view.MakeTransferView;
 import kth.intnet.projekt.model.MoneyModel;
 
@@ -14,6 +15,7 @@ import kth.intnet.projekt.model.MoneyModel;
  */
 public class MakeTransferActivity extends Activity{
     private MakeTransferView makeTransferView;
+    private MakeTransferViewController makeTransferViewController;
     private MoneyModel model;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +25,7 @@ public class MakeTransferActivity extends Activity{
         setContentView(R.layout.activity_make_transfer);
 
         makeTransferView = new MakeTransferView(findViewById(R.layout.activity_make_transfer), this, model);
+        makeTransferViewController = new MakeTransferViewController(makeTransferView, this, model);
     }
 
 

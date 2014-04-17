@@ -1,6 +1,8 @@
 import psycopg2
 import MySQLdb
 import time
+import traceback
+
 
 #TODO: Change host to mysql-vt2013.csc.kth.se:3306/ludjan
 # user ludjanadmin, pass v1YiRrr4
@@ -68,8 +70,6 @@ class DBcommunicator:
 			username = data[0].split('=')[1]
 			password = data[1].split('=')[1]
 		except IndexError:
-			cursor.close()
-			connection.close()
 			return 'ERROR: Too few arguments'
 		connection = MySQLdb.connect(host='mysql-vt2013.csc.kth.se', user='ludjanadmin', db='ludjan', passwd='v1YiRrr4')
 		cursor = connection.cursor(MySQLdb.cursors.DictCursor)
@@ -88,12 +88,8 @@ class DBcommunicator:
 		try:
 			userID = int(data[0].split('=')[1])
 		except IndexError:
-			cursor.close()
-			connection.close()
 			return 'ERROR: Too few arguments'
 		except TypeError:
-			cursor.close()
-			connection.close()
 			return 'ERROR: userID is not an integer value'
 		connection = MySQLdb.connect(host='mysql-vt2013.csc.kth.se', user='ludjanadmin', db='ludjan', passwd='v1YiRrr4')
 		cursor = connection.cursor(MySQLdb.cursors.DictCursor)
@@ -111,8 +107,6 @@ class DBcommunicator:
 		try:
 			country = data[0].split('=')[1]
 		except IndexError:
-			cursor.close()
-			connection.close()
 			return 'ERROR: Too few arguments'
 		connection = MySQLdb.connect(host='mysql-vt2013.csc.kth.se', user='ludjanadmin', db='ludjan', passwd='v1YiRrr4')
 		cursor = connection.cursor(MySQLdb.cursors.DictCursor)
@@ -126,26 +120,26 @@ class DBcommunicator:
 		data = request[2].split('&')
 		try:
 			fromUser = int(data[0].split('=')[1])
-			toUser = int(data[1].split('=')[1])
+			toUser = data[1].split('=')[1]
 			amount = float(data[2].split('=')[1])
 			fromCurr = data[3].split('=')[1]
 			transferType = data[4].split('=')[1]
 		except IndexError:
-			cursor.close()
-			connection.close()
 			return 'ERROR: Too few arguments'
 		except ValueError:
-			cursor.close()
-			connection.close()
-			return 'ERROR: only float and integer values are allowed'
+			traceback.print_exc()
+			return 'ERROR: only float, string, and integer values are allowed'
 		date = time.strftime('%Y-%m-%d %H:%M:%S')
 		connection = MySQLdb.connect(host='mysql-vt2013.csc.kth.se', user='ludjanadmin', db='ludjan', passwd='v1YiRrr4')
-		cursor = connection.cursor(MySQLdb.cursors.DictCursor)
+		cursor = connection.cursor()
 		try:
-			cursor.execute('INSERT INTO transfers(fromUser, toUser, amount, fromCurr, type, dt) VALUES (%s,%s,%s,%s)', 
-				(fromUser, toUser, amount, fromCurr, transferType, date))
+			cursor.execute('SELECT id FROM users WHERE username=%s',toUser)
+			res = cursor.fetchone()
+			cursor.execute('INSERT INTO transfers(fromUser, toUser, amount, fromCurr, type, dt) VALUES (%s,%s,%s,%s,%s,%s)', 
+				(fromUser, res[0], amount, fromCurr, transferType, date))
 			connection.commit()
 		except:
+			traceback.print_exc()
 			connection.rollback()
 		cursor.close()
 		connection.close()
@@ -162,8 +156,6 @@ class DBcommunicator:
 			country = data[5].split('=')[1]
 			email = data[6].split('=')[1]
 		except IndexError:
-			cursor.close()
-			connection.close()
 			return 'ERROR: Too few arguments'
 		connection = MySQLdb.connect(host='mysql-vt2013.csc.kth.se', user='ludjanadmin', db='ludjan', passwd='v1YiRrr4')
 		cursor = connection.cursor(MySQLdb.cursors.DictCursor)

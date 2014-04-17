@@ -120,6 +120,7 @@ public class ServerHandler {
         InputStream is = null;
         URL url = new URL(SERVER_ADDRESS + "/do_transfer/fromuser="+fromUser+"&touser="+toUser+
                 "&amount="+amount+"&fromcurr="+fromCurr+"&type="+type);
+        Log.e("SERVER CALL", url.toString());
         try {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setReadTimeout(readTimeOut /* milliseconds */);
@@ -144,7 +145,7 @@ public class ServerHandler {
             br.close();
             if(sb.toString().contains("ERROR")){
                 Log.e("Transaction failed", sb.toString());
-                return null;
+                return sb.toString();
             }
             Log.e("Transaction", sb.toString());
             return sb.toString();
