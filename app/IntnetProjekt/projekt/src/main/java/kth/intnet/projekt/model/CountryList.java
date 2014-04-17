@@ -8,9 +8,7 @@ public class CountryList {
 
     public CountryList(){}
 
-    public Country[] getCountryList() {
-        return countries;
-    }
+    public Country[] getCountryList() { return countries; }
 
     public void setCountyList(Country[] countryList) {
         this.countries = countries;

@@ -1,6 +1,7 @@
 package kth.intnet.projekt.android.controller;
 
 import android.app.Activity;
+import android.widget.TextView;
 
 import kth.intnet.projekt.android.view.ListTransfersView;
 import kth.intnet.projekt.model.MoneyModel;
@@ -12,6 +13,7 @@ public class ListTransferViewController {
     private MoneyModel model;
     private ListTransfersView view;
     private Activity activity;
+    private TextView availableBalance,balanceCurrency;
     /**
      * Public constructor for the controller.
      */
@@ -19,5 +21,8 @@ public class ListTransferViewController {
         this.view = view;
         this.model = model;
         this.activity = activity;
+
+        availableBalance = view.availableBalance;
+        balanceCurrency = view.balanceCurrency;
     }
 }
