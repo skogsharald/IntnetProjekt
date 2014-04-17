@@ -32,11 +32,7 @@ class RequestHandler(BaseHTTPRequestHandler):
 		comm = DBcommunicator()
 		if request_type == 'add_user':
 			res = comm.add_user(request)
-			if 'ERROR' in res:
-				# If arguments are too few, send a response with error
-				self.send_response(400)
-			else:
-				self.send_response(200)
+			self.send_response(200)
 			self.send_header('Content-Type', 'text/html')
 			self.end_headers()
 			self.wfile.write(res)
@@ -44,7 +40,10 @@ class RequestHandler(BaseHTTPRequestHandler):
 		if request_type == 'get_countries':
 			res = comm.get_countries()
 			if 'ERROR' in res:
-				self.send_response(400)
+				self.send_response(200)
+				self.send_header('Content-Type', 'text/html')
+				self.end_headers()
+				elf.wfile.write(res)
 				return
 			self.send_response(200)
 			self.send_header('Content-Type', 'text/json')
@@ -54,7 +53,7 @@ class RequestHandler(BaseHTTPRequestHandler):
 		if request_type == 'get_users':
 			res = comm.get_users()
 			if 'ERROR' in res:
-				self.send_response(400)
+				self.send_response(200)
 				self.send_header('Content-Type', 'text/html')
 				self.end_headers()
 				self.wfile.write(res)
@@ -67,7 +66,7 @@ class RequestHandler(BaseHTTPRequestHandler):
 		if request_type == 'login_user':
 			res = comm.login_user(request)
 			if 'ERROR' in res:
-				self.send_response(400)
+				self.send_response(200)
 				self.send_header('Content-Type', 'text/html')
 				self.end_headers()
 				self.wfile.write(res)
@@ -80,7 +79,7 @@ class RequestHandler(BaseHTTPRequestHandler):
 		if request_type == 'get_transfers':
 			res = comm.get_transfers(request)
 			if 'ERROR' in res:
-				self.send_response(400)
+				self.send_response(200)
 				self.send_header('Content-Type', 'text/html')
 				self.end_headers()
 				self.wfile.write(res)
@@ -93,7 +92,7 @@ class RequestHandler(BaseHTTPRequestHandler):
 		if request_type == 'get_user_currency':
 			res = comm.get_user_currency(request)
 			if 'ERROR' in res:
-				self.send_response(400)
+				self.send_response(200)
 				self.send_header('Content-Type', 'text/html')
 				self.end_headers()
 				self.wfile.write(res)
@@ -106,7 +105,10 @@ class RequestHandler(BaseHTTPRequestHandler):
 		if request_type == 'do_transfer':
 			res = comm.do_transfer(request)
 			if 'ERROR' in res:
-				self.send_response(400)
+				self.send_response(200)
+				self.send_header('Content-Type', 'text/html')
+				self.end_headers()
+				self.wfile.write(res)
 			else:
 				self.send_response(200)
 			self.send_header('Content-Type', 'text/html')
@@ -116,7 +118,7 @@ class RequestHandler(BaseHTTPRequestHandler):
 		if request_type == 'update_user':
 			res = comm.update_user(request)
 			if 'ERROR' in res:
-				self.send_response(400)
+				self.send_response(200)
 				self.send_header('Content-Type', 'text/html')
 				self.end_headers()
 				self.wfile.write(res)

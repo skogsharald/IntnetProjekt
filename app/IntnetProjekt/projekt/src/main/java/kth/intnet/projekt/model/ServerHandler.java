@@ -23,7 +23,7 @@ public class ServerHandler {
     private int readTimeOut;
     private int connectTimeOut;
     private Gson gson;
-    private final String SERVER_ADDRESS = "http://130.229.147.151:8000";
+    private final String SERVER_ADDRESS = "http://192.168.0.20:8000";
 
     /**
      * This is where the connection with the server actually occurs.
@@ -79,6 +79,8 @@ public class ServerHandler {
         InputStream is = null;
         URL url = new URL(SERVER_ADDRESS + "/add_user/fname="+fname+"&lname="+lname+"&username="+
                 username+"&password="+password+"&country="+country+"&email="+email);
+        Log.e("SERVER CALL", SERVER_ADDRESS + "/add_user/fname="+fname+"&lname="+lname+"&username="+
+                username+"&password="+password+"&country="+country+"&email="+email);
         try {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setReadTimeout(readTimeOut /* milliseconds */);
@@ -103,7 +105,7 @@ public class ServerHandler {
             br.close();
             if(sb.toString().contains("ERROR")){
                 Log.e("Adding user failed", sb.toString());
-                return null;
+                return sb.toString();
             }
             Log.e("Adding user", sb.toString());
             return sb.toString();

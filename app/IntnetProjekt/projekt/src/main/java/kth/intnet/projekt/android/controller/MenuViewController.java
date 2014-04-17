@@ -6,9 +6,6 @@ import android.view.View;
 
 import kth.intnet.projekt.android.ListTransferActivity;
 import kth.intnet.projekt.android.MakeTransferActivity;
-import kth.intnet.projekt.android.MenuActivity;
-import kth.intnet.projekt.android.NewUserActivity;
-import kth.intnet.projekt.android.view.LoginView;
 import kth.intnet.projekt.android.view.MenuView;
 import kth.intnet.projekt.model.MoneyModel;
 

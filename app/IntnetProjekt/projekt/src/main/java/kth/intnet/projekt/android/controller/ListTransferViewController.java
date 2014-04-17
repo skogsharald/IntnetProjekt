@@ -3,7 +3,6 @@ package kth.intnet.projekt.android.controller;
 import android.app.Activity;
 
 import kth.intnet.projekt.android.view.ListTransfersView;
-import kth.intnet.projekt.android.view.LoginView;
 import kth.intnet.projekt.model.MoneyModel;
 
 /**

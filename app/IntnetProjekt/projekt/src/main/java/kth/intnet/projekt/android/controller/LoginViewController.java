@@ -8,9 +8,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
-import kth.intnet.projekt.android.LoginActivity;
 import kth.intnet.projekt.android.MenuActivity;
-import kth.intnet.projekt.android.MoneyApplication;
 import kth.intnet.projekt.android.NewUserActivity;
 import kth.intnet.projekt.android.view.LoginView;
 import kth.intnet.projekt.model.MoneyModel;
@@ -55,6 +53,7 @@ public class LoginViewController implements View.OnClickListener {
                     else{
                         User newUser = gson.fromJson(result, User.class);
                         model.setCurrentUser(newUser);
+                        Toast.makeText(activity.getApplicationContext(), "Login successful", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(activity, MenuActivity.class);
                         activity.startActivity(intent);
                         Log.e("RESULT", result);
