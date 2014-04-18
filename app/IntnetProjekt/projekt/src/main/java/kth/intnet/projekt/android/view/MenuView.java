@@ -14,7 +14,7 @@ public class MenuView {
     private View view;
     private Activity activity;
     private MoneyModel model;
-    public Button listTransfersButton, makeTransferButton;
+    public Button listTransfersButton, makeTransferButton, logoutButton;
 
     public MenuView(View view, Activity activity, MoneyModel model){
         this.view = view;
@@ -24,5 +24,7 @@ public class MenuView {
         // Instantiate the view
         listTransfersButton = (Button) activity.findViewById(R.id.listTransfersButton);
         makeTransferButton = (Button) activity.findViewById(R.id.makeTransferButton);
+        logoutButton = (Button) activity.findViewById(R.id.logoutButton);
+
     }
 }

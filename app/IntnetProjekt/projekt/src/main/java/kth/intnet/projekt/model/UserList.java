@@ -1,5 +1,6 @@
 package kth.intnet.projekt.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -7,14 +8,30 @@ import java.util.List;
  */
 public class UserList {
     private User[] users;
+    private ArrayList<User> uArrayList;
 
-    public UserList(){}
+    public UserList(){
+        uArrayList = new ArrayList<User>();
+    }
 
+    public void convertToArrayList() {
+        for(User u: users){
+            uArrayList.add(u);
+        }
+    }
+
+    public void addUser(User u){
+        uArrayList.add(u);
+    }
     public User[] getUserList() {
         return users;
     }
 
     public void setUserList(User[] userList) {
         this.users = users;
+    }
+
+    public ArrayList<User> getUserArrayList(){
+        return uArrayList;
     }
 }

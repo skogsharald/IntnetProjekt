@@ -26,6 +26,7 @@
 
             <TextView
                 android:id="@+id/transferDate"
+                android:layout_weight="4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="15sp"
@@ -34,16 +35,17 @@
             <TextView
                 android:id="@+id/transferAmount"
                 android:layout_width="wrap_content"
+                android:layout_weight="0"
+                android:layout_marginRight="5dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="145dp"
                 android:textSize="15sp"
                 android:text="200"/>
 
             <TextView
                 android:id="@+id/transferCurrency"
+                android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
                 android:textSize="15sp"
                 android:text="SEK"/>
 

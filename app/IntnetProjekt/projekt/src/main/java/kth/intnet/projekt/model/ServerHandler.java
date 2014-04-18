@@ -65,7 +65,7 @@ public class ServerHandler {
             Log.e("SERVER RESULT", sb.toString());
             if(sb.toString().contains("ERROR")){
                 Log.e("Login failed", sb.toString());
-                return null;
+                return sb.toString();
             }
             Log.e("Login", sb.toString());
             return sb.toString();
@@ -116,10 +116,10 @@ public class ServerHandler {
         }
     }
 
-    public String newTransaction(String fromUser, String toUser, float amount, String fromCurr, String type) throws IOException  {
+    public String newTransaction(String fromUser, String toUser, float amount, String fromCurr, String type, float rate) throws IOException  {
         InputStream is = null;
         URL url = new URL(SERVER_ADDRESS + "/do_transfer/fromuser="+fromUser+"&touser="+toUser+
-                "&amount="+amount+"&fromcurr="+fromCurr+"&type="+type);
+                "&amount="+amount+"&fromcurr="+fromCurr+"&type="+type+"&rate="+rate);
         Log.e("SERVER CALL", url.toString());
         try {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -231,9 +231,9 @@ public class ServerHandler {
             }
         }
     }
-    public String getTransactions() throws IOException  {
+    public String getTransactions(String userId) throws IOException  {
         InputStream is = null;
-        URL url = new URL(SERVER_ADDRESS + "/get_transfers/");
+        URL url = new URL(SERVER_ADDRESS + "/get_transfers/userid="+userId);
         try {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setReadTimeout(readTimeOut /* milliseconds */);
@@ -307,6 +307,45 @@ public class ServerHandler {
             }
         }
     }
+
+    public String getTransferRate(String fromCurr, String toCurr) throws IOException{
+        InputStream is = null;
+        URL url = new URL(SERVER_ADDRESS + "/get_transfer_rate/fromCurr="+fromCurr+"&toCurr="+toCurr);
+        try {
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setReadTimeout(readTimeOut /* milliseconds */);
+            conn.setConnectTimeout(connectTimeOut /* milliseconds */);
+            conn.setRequestMethod("GET");
+            conn.setDoInput(true);
+            // Starts the query
+            conn.connect();
+            int response = conn.getResponseCode();
+            if(response == 400){
+                return null;
+            }
+            is = conn.getInputStream();
+
+            // Convert the InputStream into a string
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null){
+                sb.append(line+"\n");
+            }
+            br.close();
+            if(sb.toString().contains("ERROR")){
+                Log.e("Something went wrong", sb.toString());
+                return null;
+            }
+            Log.e("RATE", sb.toString());
+            return sb.toString();
+        } finally {
+            if (is != null) {
+                is.close();
+            }
+        }
+    }
+
     public String getUserCurrency(String country) throws IOException  {
         InputStream is = null;
         URL url = new URL(SERVER_ADDRESS + "/get_user_currency/country="+country);

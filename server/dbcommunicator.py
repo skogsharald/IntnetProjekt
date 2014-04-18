@@ -57,7 +57,7 @@ class DBcommunicator:
 		cursor.execute('SELECT id,fname,lname,username,password,country,email FROM users')
 		users = cursor.fetchall()
 		if len(users) == 0:
-			message = 'ERROR: No users in database'
+			message = []
 		else:
 			message = users
 		cursor.close()
@@ -93,7 +93,7 @@ class DBcommunicator:
 			return 'ERROR: userID is not an integer value'
 		connection = MySQLdb.connect(host='mysql-vt2013.csc.kth.se', user='ludjanadmin', db='ludjan', passwd='v1YiRrr4')
 		cursor = connection.cursor(MySQLdb.cursors.DictCursor)
-		cursor.execute('SELECT id, fromUser, toUser, amount, dt FROM transfers where fromUser = %s', userID)
+		cursor.execute('SELECT id, fromUser, toUser, amount, dt, fromCurr, type FROM transfers where fromUser = %s or toUser = %s', (userID, userID))
 		transfers = cursor.fetchall()
 		cursor.close()
 		connection.close()
@@ -120,10 +120,11 @@ class DBcommunicator:
 		data = request[2].split('&')
 		try:
 			fromUser = int(data[0].split('=')[1])
-			toUser = data[1].split('=')[1]
+			toUser = float(data[1].split('=')[1])
 			amount = float(data[2].split('=')[1])
 			fromCurr = data[3].split('=')[1]
 			transferType = data[4].split('=')[1]
+			rate = float(data[5].split('=')[1])
 		except IndexError:
 			return 'ERROR: Too few arguments'
 		except ValueError:
@@ -133,10 +134,18 @@ class DBcommunicator:
 		connection = MySQLdb.connect(host='mysql-vt2013.csc.kth.se', user='ludjanadmin', db='ludjan', passwd='v1YiRrr4')
 		cursor = connection.cursor()
 		try:
-			cursor.execute('SELECT id FROM users WHERE username=%s',toUser)
-			res = cursor.fetchone()
 			cursor.execute('INSERT INTO transfers(fromUser, toUser, amount, fromCurr, type, dt) VALUES (%s,%s,%s,%s,%s,%s)', 
-				(fromUser, res[0], amount, fromCurr, transferType, date))
+				(fromUser, toUser, amount, fromCurr, transferType, date))
+			# Current balance of user
+			cursor.execute('SELECT balance FROM users WHERE id=%s', fromUser)
+			res = cursor.fetchone()
+			# Update balance of current user
+			cursor.execute('UPDATE users SET balance=%s WHERE id=%s', ((res[0]-amount), fromUser))
+
+			# Update balance or recipient
+			cursor.execute('SELECT balance FROM users WHERE id=%s', toUser)
+			res = cursor.fetchone()
+			cursor.execute('UPDATE users SET balance=%s WHERE id=%s', ((res[0]+(amount*rate)), toUser))
 			connection.commit()
 		except:
 			traceback.print_exc()
@@ -144,6 +153,22 @@ class DBcommunicator:
 		cursor.close()
 		connection.close()
 		return 'Transfer complete'
+
+	def get_transfer_rate(self, request):
+		data = request[2].split('&')
+		try:
+			fromCurr = data[0].split('=')[1]
+			toCurr = data[1].split('=')[1]
+		except IndexError:
+			return 'ERROR: Too few arguments'	
+		connection = MySQLdb.connect(host='mysql-vt2013.csc.kth.se', user='ludjanadmin', db='ludjan', passwd='v1YiRrr4')
+		cursor = connection.cursor()
+		cursor.execute('SELECT rate FROM rates WHERE fromCurr=%s AND toCurr=%s', (fromCurr, toCurr))
+		res = cursor.fetchone()
+		if res == None:
+			return 'ERROR: No entry in database'
+		rate = res[0]
+		return rate
 
 	def update_user(self, request):
 		data = request[2].split('&')

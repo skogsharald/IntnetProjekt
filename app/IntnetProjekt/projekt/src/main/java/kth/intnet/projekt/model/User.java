@@ -11,11 +11,12 @@ public class User {
     private String password;
     private String email;
     private String country;
+    private float balance;
 
     public User(){
 
     }
-    public User(int id, String fName, String lName, String username, String password, String email, String country){
+    public User(int id, String fName, String lName, String username, String password, String email, String country, float balance){
         this.id = id;
         this.fName = fName;
         this.lName = lName;
@@ -23,6 +24,7 @@ public class User {
         this.password = password;
         this.email = email;
         this.country = country;
+        this.balance = balance;
     }
 
 
@@ -80,5 +82,14 @@ public class User {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public void setBalance(float balance) { this.balance = balance; }
+
+    public float getBalance() { return balance; }
+
+    @Override
+    public String toString(){
+        return this.getId()+ ": " + this.getUsername();
     }
 }

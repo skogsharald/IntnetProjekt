@@ -71,7 +71,8 @@ public class ServerTask extends AsyncTask<String, Integer, String> {
                 float amount = Float.parseFloat(params[3]);
                 String fromCurr = params[4];
                 String type = params[5];
-                String result = serverHandler.newTransaction(fromUser, toUser, amount, fromCurr, type);
+                float rate = Float.parseFloat(params[6]);
+                String result = serverHandler.newTransaction(fromUser, toUser, amount, fromCurr, type, rate);
                 if(result != null) {
                     return result;
                 }
@@ -82,9 +83,17 @@ public class ServerTask extends AsyncTask<String, Integer, String> {
                     return result;
                 }
             } else if (method.equals("getTransactions")) {
+                String userId = params[1];
                 // Get all transactions
-                String result = serverHandler.getTransactions();
+                String result = serverHandler.getTransactions(userId);
                 if(result != null) {
+                    return result;
+                }
+            } else if (method.equals("getTransferRate")){
+                String fromCurr = params[1];
+                String toCurr = params[2];
+                String result = serverHandler.getTransferRate(fromCurr, toCurr);
+                if( result != null ){
                     return result;
                 }
             } else if (method.equals("getUserCurrency")) {
@@ -109,7 +118,7 @@ public class ServerTask extends AsyncTask<String, Integer, String> {
                 }
             }
         } catch(IOException e){
-            Log.e("Error in server communication", e.getMessage());
+            Log.e("Error in server communication", "ERROR", e);
 
         }
         return null;

@@ -34,31 +34,7 @@ public class ListTransfersView {
         balanceCurrency = (TextView) activity.findViewById(R.id.balanceCurrency);
         includeTransfers = (LinearLayout) activity.findViewById((R.id.includeTransfers));
 
-        availableBalance.setText("2000");
 
-        String currency = "";
-        String userCountry = model.getCurrentUser().getCountry();
-
-        for(Country country: model.getCountries().getCountryList()){
-            if(country.getCountryName().equals(userCountry)) {
-                currency = country.getCurrency();
-            }
-        }
-
-        balanceCurrency.setText(currency);
-
-        LinearLayout aTransfer = (LinearLayout) View.inflate(activity.getBaseContext(), R.layout.a_transfer_view, null);
-        includeTransfers.addView(aTransfer, 0);
-
-        TextView sender = (TextView) aTransfer.findViewById(R.id.sender);
-        TextView amount = (TextView) aTransfer.findViewById(R.id.transferAmount);
-        TextView date = (TextView) aTransfer.findViewById(R.id.transferDate);
-        TextView transferCurrency = (TextView) aTransfer.findViewById(R.id.transferCurrency);
-
-        sender.setText("Sandra");
-        amount.setText(300);
-        date.setText("2014-04-18");
-        transferCurrency.setText(currency);
 
     }
 }

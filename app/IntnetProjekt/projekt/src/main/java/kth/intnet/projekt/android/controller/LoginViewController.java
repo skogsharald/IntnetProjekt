@@ -42,25 +42,16 @@ public class LoginViewController implements View.OnClickListener {
             // Login user
             String username = view.usernameField.getText().toString();
             String password = view.passwordField.getText().toString();
-            if(username != null && password != null) {
-                ServerTask sTask = new ServerTask(activity.getApplicationContext());
-                sTask.execute("loginUser", username, password);
-                try {
-                    String result = sTask.get();
-                    if(result == null){
-                        Toast.makeText(activity.getApplicationContext(), "Login Failed", Toast.LENGTH_SHORT).show();
-                    }
-                    else{
-                        User newUser = gson.fromJson(result, User.class);
-                        model.setCurrentUser(newUser);
-                        Toast.makeText(activity.getApplicationContext(), "Login successful", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(activity, MenuActivity.class);
-                        activity.startActivity(intent);
-                        Log.e("RESULT", result);
-                    }
-                } catch (Exception e){
-                    Log.e("ERROR", e.getMessage());
+            if(username.length() != 0 && password.length() != 0) {
+                boolean successful = model.loginUser(username, password);
+                if(!successful){
+                    Toast.makeText(activity.getApplicationContext(), "Login failed", Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent = new Intent(activity, MenuActivity.class);
+                    activity.startActivity(intent);
+                    Toast.makeText(activity, "Login successful", Toast.LENGTH_SHORT).show();
                 }
+
             }
         }
         if(v.equals(view.createUserButton)){

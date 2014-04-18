@@ -26,4 +26,15 @@
         android:layout_height="wrap_content"
         android:background="@drawable/buttonshape" />
 
+    <Button
+        android:text="Logout"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/buttonshape"
+        android:id="@+id/logoutButton"
+         />
+
 </LinearLayout>

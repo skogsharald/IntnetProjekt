@@ -26,6 +26,7 @@ public class MenuViewController implements View.OnClickListener {
 
         view.listTransfersButton.setOnClickListener(this);
         view.makeTransferButton.setOnClickListener(this);
+        view.logoutButton.setOnClickListener(this);
     }
 
     @Override
@@ -39,6 +40,12 @@ public class MenuViewController implements View.OnClickListener {
             // Make transfers
             Intent intent = new Intent(activity, MakeTransferActivity.class);
             activity.startActivity(intent);
+        }
+
+        // Log user out
+        if(v.equals(view.logoutButton)){
+            model.setCurrentUser(null);
+            activity.finish();
         }
     }
 }

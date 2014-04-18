@@ -2,28 +2,22 @@ package kth.intnet.projekt.android.controller;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executor;
 
 import kth.intnet.projekt.R;
 import kth.intnet.projekt.android.MenuActivity;
-import kth.intnet.projekt.android.view.MenuView;
 import kth.intnet.projekt.android.view.NewUserView;
 import kth.intnet.projekt.model.Country;
 import kth.intnet.projekt.model.CountryList;
 import kth.intnet.projekt.model.MoneyModel;
-import kth.intnet.projekt.model.ServerTask;
-import kth.intnet.projekt.model.User;
 
 /**
  * Created by Sandra Grosz on 2014-03-23.
@@ -32,13 +26,11 @@ public class NewUserViewController implements View.OnClickListener{
     private NewUserView view;
     private Activity activity;
     private MoneyModel moneyModel;
-    private Gson gson;
 
     public NewUserViewController(NewUserView view, Activity activity, MoneyModel moneyModel){
         this.view = view;
         this.activity = activity;
         this.moneyModel = moneyModel;
-        this.gson = new Gson();
 
         view.createAccountButton.setOnClickListener(this);
 
@@ -90,24 +82,15 @@ public class NewUserViewController implements View.OnClickListener{
         if(!password1.equals(password2)){
             Toast.makeText(activity.getApplicationContext(), "Passwords didn't match", Toast.LENGTH_SHORT).show();
         } else {
-            ServerTask sTask = new ServerTask(activity.getApplicationContext());
-            sTask.execute("addUser", fname, lname, username, password1, country, email);
-            try {
-                String res = sTask.get();
-                if(res.contains("ERROR")){
-                    Toast.makeText(activity.getApplicationContext(), res.replace("ERROR:", ""), Toast.LENGTH_SHORT).show();
-                } else {
-                    ServerTask sTask2 = new ServerTask(activity.getApplicationContext());
-                    sTask2.execute("loginUser", username, password1);
-                    String res2 = sTask2.get();
-                    User newUser = gson.fromJson(res2, User.class);
-                    moneyModel.setCurrentUser(newUser);
-                    Toast.makeText(activity.getApplicationContext(), "User successfully created", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(activity, MenuActivity.class);
-                    activity.startActivity(intent);
-                }
-            } catch (Exception e){
-                Log.e("ERROR", e.toString());
+            String res = moneyModel.addNewUser(fname, lname, username, password1, country, email);
+            if(res == null){
+                Toast.makeText(activity.getApplicationContext(), "Creating user failed. Check network connection.", Toast.LENGTH_SHORT).show();
+            } else if(res.contains("ERROR")){
+                Toast.makeText(activity.getApplicationContext(), res.replace("ERROR:", ""), Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(activity.getApplicationContext(), "User successfully created", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(activity, MenuActivity.class);
+                activity.startActivity(intent);
             }
 
         }
