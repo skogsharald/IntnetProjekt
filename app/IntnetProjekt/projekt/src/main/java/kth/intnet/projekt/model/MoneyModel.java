@@ -22,20 +22,17 @@ import kth.intnet.projekt.android.MenuActivity;
 /**
  * Created by Ludde on 2014-03-03.
  */
-public class MoneyModel extends Observable {
+public class MoneyModel {
     private User currentUser;
     private UserList uList;
-    private CountryList cList;
     private TransactionList tList;
+    private CountryList cList;
     private Gson gson;
     private Context context;
 
     public MoneyModel(Context context) {
         this.context = context;
         gson = new Gson();
-        uList = fillUserList(context);
-        uList.convertToArrayList();
-        cList = fillCountryList(context);
     }
 
     /**
@@ -94,14 +91,12 @@ public class MoneyModel extends Observable {
         return currentUser;
     }
 
+    /**
+     * User has been logged in or logged out
+     * @param currentUser
+     */
     public void setCurrentUser(User currentUser) {
-        notifyObservers("User changed");
         this.currentUser = currentUser;
-        if(currentUser != null) {
-            tList = fillTransactionList(context, this.currentUser.getId());
-            tList.convertListToArrayList();
-            Log.e("THIS USER'S TRANSACTIONS", tList.getTransactionArrayList().toString() + ", " + Arrays.toString(tList.getTransactionList()));
-        }
     }
 
     public User getUser(int userId){
@@ -152,32 +147,35 @@ public class MoneyModel extends Observable {
                 return "ERROR: User country not found";
             }
 
-            // Find transaction rate
-            float rate = Float.parseFloat(getTransferRate(fromCurr, toCurr));
-            // Add transaction in model
-            // TODO: What happens when client can't connect to server?
-            Transaction t = new Transaction(fromUser, toUserId, amount, fromCurr, "Outgoing", rate, new Timestamp(Calendar.getInstance().getTimeInMillis()).toString().split("\\.")[0]);
-            currentUser.setBalance(currentUser.getBalance()-amount);
-            tList.addTransaction(t);
 
             // Make transaction in database
             ServerTask sTask2 = new ServerTask(context);
-            sTask2.execute("newTransaction", String.valueOf(currentUser.getId()), String.valueOf(toUserId), String.valueOf(amount), fromCurr, "Outgoing", String.valueOf(rate));
             try {
+                // Find transaction rate
+                String rateString = getTransferRate(fromCurr, toCurr);
+                if(rateString == null){
+                    return "ERROR: Transfer failed. Check your network connection.";
+                }
+                float rate = Float.parseFloat(rateString);
+
+                sTask2.execute("newTransaction", String.valueOf(currentUser.getId()), String.valueOf(toUserId), String.valueOf(amount), fromCurr, "Outgoing", String.valueOf(rate));
                 String result = sTask2.get();
                 Log.e("RESULT FROM TRANSFER", result);
                 String toastText;
                 if (!result.contains("ERROR")) {
+                    // Add transaction in model
+                    // TODO: What happens when client can't connect to server?
+                    Transaction t = new Transaction(fromUser, toUserId, amount, fromCurr, "Outgoing", rate, new Timestamp(Calendar.getInstance().getTimeInMillis()).toString().split("\\.")[0]);
+                    currentUser.setBalance(currentUser.getBalance()-amount);
+                    tList.addTransaction(t);
                     toastText = "Transfer successful!";
                 } else {
                     toastText = "ERROR: Transfer failed. Check your parameters and network connection.";
                 }
                 return toastText;
             } catch(Exception e){
-                Log.e("ERROR", e.getMessage());
+                Log.e("ERROR", "ERROR", e);
             }
-
-            notifyObservers("Transaction added");
         }
         return null;
     }
@@ -194,9 +192,9 @@ public class MoneyModel extends Observable {
                 sTask2.execute("loginUser", username, password1);
                 String res2 = sTask2.get();
                 User newUser = gson.fromJson(res2, User.class);
-                // Add the new user in model
+                // Add the new user in model and log in
                 uList.addUser(newUser);
-                setCurrentUser(newUser);
+                loginUser(newUser.getUsername(), newUser.getPassword());
                 return "Success";
             }
         } catch (Exception e){
@@ -209,6 +207,12 @@ public class MoneyModel extends Observable {
         return tList.getTransactionArrayList();
     }
 
+    /**
+     * Sign in user and load from server
+     * @param username
+     * @param password
+     * @return
+     */
     public boolean loginUser(String username, String password) {
 
         ServerTask sTask = new ServerTask(context);
@@ -220,6 +224,11 @@ public class MoneyModel extends Observable {
             } else {
                 User newUser = gson.fromJson(result, User.class);
                 setCurrentUser(newUser);
+                uList = fillUserList(context);
+                uList.convertToArrayList();
+                tList = fillTransactionList(context, this.currentUser.getId());
+                tList.convertListToArrayList();
+                cList = fillCountryList(context);
                 Log.e("RESULT", result);
                 return true;
             }

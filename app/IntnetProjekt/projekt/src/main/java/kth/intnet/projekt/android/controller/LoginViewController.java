@@ -52,6 +52,9 @@ public class LoginViewController implements View.OnClickListener {
                     Toast.makeText(activity, "Login successful", Toast.LENGTH_SHORT).show();
                 }
 
+            } else {
+                Toast.makeText(activity.getApplicationContext(), "Both fields must be entered.", Toast.LENGTH_SHORT).show();
+                return;
             }
         }
         if(v.equals(view.createUserButton)){

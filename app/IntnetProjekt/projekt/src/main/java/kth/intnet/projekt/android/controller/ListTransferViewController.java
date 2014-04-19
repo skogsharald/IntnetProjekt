@@ -54,6 +54,18 @@ public class ListTransferViewController {
         ArrayList<Transaction> tList = (ArrayList<Transaction>) model.getAllTransactions();
         Log.e("TRANSACTIONS TO BE LISTED", tList.toString());
 
+        if(tList.isEmpty()){
+            LinearLayout aTransfer = (LinearLayout) View.inflate(activity.getBaseContext(), R.layout.a_transfer_view, null);
+            includeTransfers.addView(aTransfer, 0);
+            TextView sender = (TextView) aTransfer.findViewById(R.id.sender);
+            TextView amount = (TextView) aTransfer.findViewById(R.id.transferAmount);
+            TextView date = (TextView) aTransfer.findViewById(R.id.transferDate);
+            TextView transferCurrency = (TextView) aTransfer.findViewById(R.id.transferCurrency);
+            sender.setText("No transactions have been made to or from this account yet.");
+            amount.setText("");
+            date.setText("");
+            transferCurrency.setText("");
+        }
         for(Transaction t: tList){
             LinearLayout aTransfer = (LinearLayout) View.inflate(activity.getBaseContext(), R.layout.a_transfer_view, null);
             includeTransfers.addView(aTransfer, 0);

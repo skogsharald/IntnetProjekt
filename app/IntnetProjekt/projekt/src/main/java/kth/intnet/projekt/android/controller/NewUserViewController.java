@@ -71,6 +71,11 @@ public class NewUserViewController implements View.OnClickListener{
         String username = this.view.createUsernameField.getText().toString();
         String password1 = this.view.passwordOneField.getText().toString();
         String password2 = this.view.passwordTwoField.getText().toString();
+        if(this.view.dropdown.getSelectedItem() == null){
+            // No server connection is available
+            Toast.makeText(activity.getApplicationContext(), "Error in connecting to server. Check network connection.", Toast.LENGTH_SHORT).show();
+            return;
+        }
         String country = this.view.dropdown.getSelectedItem().toString();
         String email = this.view.emailField.getText().toString();
 
